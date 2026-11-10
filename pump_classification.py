@@ -132,3 +132,75 @@ print(
         zero_division=0
     )
 )
+# STEP 11: Confusion Matrix
+
+cm = confusion_matrix(
+    y_test,
+    y_pred,
+    labels=["Normal", "Warning", "Fault"]
+)
+
+print("\n==============================")
+print("CONFUSION MATRIX")
+print("==============================")
+
+print(cm)
+
+
+# STEP 12: Display Confusion Matrix
+
+disp = ConfusionMatrixDisplay(
+    confusion_matrix=cm,
+    display_labels=["Normal", "Warning", "Fault"]
+)
+
+disp.plot()
+
+plt.title("Pump Condition Classification - Random Forest")
+plt.tight_layout()
+plt.show()
+
+
+# STEP 13: Feature Importance
+
+importance = pd.Series(
+    model.feature_importances_,
+    index=X.columns
+).sort_values(ascending=False)
+
+print("\n==============================")
+print("FEATURE IMPORTANCE")
+print("==============================")
+
+print(importance)
+
+
+# STEP 14: Display Feature Importance
+
+importance.plot(kind="bar")
+
+plt.title("Feature Importance - Random Forest")
+plt.xlabel("Pump Features")
+plt.ylabel("Importance")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+
+# STEP 15: Predict a New Pump Observation
+
+new_pump = pd.DataFrame({
+    "Vibration": [6.8],
+    "RPM": [1580],
+    "Temperature": [92],
+    "Pressure": [3.0],
+    "Operating_Hours": [2400]
+})
+
+prediction = model.predict(new_pump)
+
+print("\n==============================")
+print("NEW PUMP PREDICTION")
+print("==============================")
+
+print("Prediction:", prediction[0])
